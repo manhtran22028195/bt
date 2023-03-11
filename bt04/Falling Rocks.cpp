@@ -1,40 +1,31 @@
 #include <bits/stdc++.h>
+char s[1005][1005];
+int a[1005][1005];
 using namespace std;
-
-int save(int i,int j,vector <vector<char>> s,int w,int h,vector<vector<bool>> &visited)
-{
-    if(i==h)
-        return 1;
-    if(visited[i][j])
-        return 0;
-    else
-        visited[i][j]=1;
-    if(s[max(i-1,0)][j]=='R')
-        return 0;
-    //cout<< i<< " "<< j<< endl;
-    if(s[i][j]=='R')
-        return 0;
-    return save(i+1,min(j+1,w-1),s,w,h,visited)+save(i+1,j,s,w,h,visited)+save(i+1,max(j-1,0),s,w,h,visited);
+void test(int n,int m,int h,int w){
+    if(a[n][m]||s[min(n,h-1)][m]=='R'||s[max(n-1,0)][m]=='R')
+    return;
+    if (n==h)
+    {
+        std::cout<< "YES";
+        exit(0);
+    }
+    a[n][m]=1;
+    test(n+1,m,h,w);
+    test(n+1,max(m-1,0),h,w);
+    test(n+1,min(m+1,w-1),h,w);
 }
-
 int main(){
-    int w,h;
-    cin>>w>>h;
-    vector <vector<char>> s(h);
-    char e;
-    vector <vector<bool>> visited(h);
+    int h,w;
+    std::cin>> h>> w;
     int n,m;
     for(int i=0;i<h;i++)
-        for(int j=0;j<w;j++)
+    for(int j=0;j<w;j++)
         {
-            cin>> e;
-            if(e=='Y'){
+            std::cin>> s[i][j];
+            if(s[i][j]=='Y')
                 n=i,m=j;
-            }
-            s[i].push_back(e);
-            visited[i].push_back(0);
         }
-    if(save(n,m,s,w,h,visited))
-        cout<< "YES";
-    else cout<< "NO";
+    test(n,m,h,w);
+    cout<< "NO";
 }
